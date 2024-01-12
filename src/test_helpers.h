@@ -24,9 +24,9 @@
 #define ASSERT(check, msg, ...)                                      \
 	do {                                                         \
 		if (check)                                           \
-			printf("[  OK  ] " msg "\n", ##__VA_ARGS__); \
+			printf("[  \x1b[32mOK\x1b[0m  ] " msg "\n", ##__VA_ARGS__); \
 		else                                                 \
-			printf("[ FAIL ] " msg "\n", ##__VA_ARGS__); \
+			printf("[ \x1b[31mFAIL\x1b[0m ] " msg "\n", ##__VA_ARGS__); \
 	} while (0)
 
 #endif

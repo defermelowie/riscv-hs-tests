@@ -2,7 +2,7 @@ ENTRY(_start)
 
 SECTIONS {
     /* Start of kernel */
-    . = 0x80200000;
+    . = 0x80000000;
 
     _image_start = .;
 
@@ -24,6 +24,10 @@ SECTIONS {
         *(.data)
         *(.data*)
     }
+
+	.tohost ALIGN(0x1000) :  {
+		*(.tohost)
+	}
 
     . = ALIGN(8);
     .bss : {

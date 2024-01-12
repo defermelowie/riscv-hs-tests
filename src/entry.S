@@ -13,6 +13,10 @@ _start:
 
 	la sp, _init_stack_end
 
+	# Delegate everything to HS-mode handler
+	li t0, -1
+	csrs medeleg, t0
+
 	la a2, _hang
 	csrw stvec, a2
 
@@ -23,3 +27,11 @@ _start:
 	.balign 4
 _hang:
 	j _hang
+
+.section ".tohost","aw",@progbits
+.align 6
+.globl tohost
+tohost: .dword 0
+.align 6
+.globl fromhost
+fromhost: .dword 0

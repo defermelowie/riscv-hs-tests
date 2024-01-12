@@ -1,6 +1,7 @@
 #include "printf.h"
 #include "riscv_encodings.h"
-#include "sbi.h"
+// #include "sbi.h"
+#include "htif.h"
 
 __attribute__((section(".data.pagesize4")))
 char playground[PAGE_SIZE * 4];
@@ -9,8 +10,12 @@ __attribute__((section(".data.pagesize")))
 char stack1[PAGE_SIZE], stack2[PAGE_SIZE], stack3[PAGE_SIZE];
 
 void _putchar(char ch)
-{
+{	
+	#ifdef HTIF
+	htif_console_putchar(ch);
+	#else
 	sbi_console_putchar(ch);
+	#endif
 }
 
 void panic(const char *format, ...)

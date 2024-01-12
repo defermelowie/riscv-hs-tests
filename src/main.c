@@ -6,7 +6,8 @@
 #include "printf.h"
 #include "pt.h"
 #include "riscv_encodings.h"
-#include "sbi.h"
+// #include "sbi.h"
+#include "htif.h"
 
 void main(unsigned long hartid, void *fdt)
 {
@@ -19,5 +20,9 @@ void main(unsigned long hartid, void *fdt)
 	}
 
 	printf("riscv-hs-tests out\n");
+	#ifdef HTIF
+	htif_exit(1);
+	#else
 	sbi_shutdown();
+	#endif
 }
