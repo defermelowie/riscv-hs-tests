@@ -79,21 +79,21 @@ void test_misaligned(void)
 
 	if (misaligned_load_okay) {
 		ASSERT(status.scause == CAUSE_LOAD_GUEST_PAGE_FAULT,
-		       "scause == \"Load guest-page fault\"");
+		       "scause == \"Load guest-page fault\" [scause = 0x%lx]", status.scause);
 
 		ASSERT(status.stval == 0x200000,
-		       "stval = 0x200000 (Faulting page GVA of load)");
+		       "stval = 0x200000 (Faulting page GVA of load) [stval = 0x%lx]", status.stval);
 		ASSERT(status.htval == 0 || status.htval == (0x200000 >> 2),
-		       "htval = One of { (0x200000 >> 2) (Faulting page GPA of load >> 2), 0 }");
+		       "htval = One of { (0x200000 >> 2) (Faulting page GPA of load >> 2), 0 } [htval = 0x%lx]", status.htval);
 	} else {
 		ASSERT(status.scause == CAUSE_MISALIGNED_LOAD,
-		       "scause == \"Misaligned load\"");
+		       "scause == \"Misaligned load\" [scause = 0x%lx]", status.scause);
 
 		ASSERT(status.stval == 0x1ffffd,
-		       "stval = 0x1ffffd (GVA of load)");
+		       "stval = 0x1ffffd (GVA of load) [stval = 0x%lx]", status.stval);
 	}
 
-	ASSERT(FIELD(status.hstatus, HSTATUS_GVA) == 1, "hstatus.GVA = 1");
+	ASSERT(FIELD(status.hstatus, HSTATUS_GVA) == 1, "hstatus.GVA = 1 [hstatus.GVA = 0x%lx]", FIELD(status.hstatus, HSTATUS_GVA));
 
 	LOG("Testing with misaligned AMO");
 
@@ -106,9 +106,9 @@ void test_misaligned(void)
 	} else {
 		LOG("Misaligned AMO failed");
 		ASSERT(status.scause == CAUSE_STORE_GUEST_PAGE_FAULT,
-		       "scause == \"Misaligned store/AMO\"");
+		       "scause == \"Misaligned store/AMO\" [scause = 0x%lx]", status.scause);
 		ASSERT(status.stval == 0x1ff003,
-		       "stval = 0x1ff003 (GVA of AMO)");
+		       "stval = 0x1ff003 (GVA of AMO) [stval = 0x%lx]", status.stval);
 	}
 
 	LOG("Testing with misaligned AMO with guest-page fault");
@@ -122,19 +122,19 @@ void test_misaligned(void)
 
 	if (misaligned_amo_okay) {
 		ASSERT(status.scause == CAUSE_STORE_GUEST_PAGE_FAULT,
-		       "scause == \"Store/AMO guest-page fault\"");
+		       "scause == \"Store/AMO guest-page fault\" [scause = 0x%lx]", status.scause);
 
 		ASSERT(status.stval == 0x200000,
-		       "stval = 0x200000 (Faulting page GVA of AMO)");
+		       "stval = 0x200000 (Faulting page GVA of AMO) [stval = 0x%lx]", status.stval);
 		ASSERT(status.htval == 0 || status.htval == (0x200000 >> 2),
-		       "htval = One of { (0x200000 >> 2) (Faulting page GPA of AMO >> 2), 0 }");
+		       "htval = One of { (0x200000 >> 2) (Faulting page GPA of AMO >> 2), 0 } [htval = 0x%lx]", status.htval);
 	} else {
 		ASSERT(status.scause == CAUSE_STORE_GUEST_PAGE_FAULT,
-		       "scause == \"Misaligned store/AMO\"");
+		       "scause == \"Misaligned store/AMO\" [scause = 0x%lx]", status.scause);
 
 		ASSERT(status.stval == 0x1ffffd,
-		       "stval = 0x1ffffd (GVA of AMO)");
+		       "stval = 0x1ffffd (GVA of AMO) [stval = 0x%lx]", status.stval);
 	}
 
-	ASSERT(FIELD(status.hstatus, HSTATUS_GVA) == 1, "hstatus.GVA = 1");
+	ASSERT(FIELD(status.hstatus, HSTATUS_GVA) == 1, "hstatus.GVA = 1 [hstatus.GVA = 0x%lx]", FIELD(status.hstatus, HSTATUS_GVA));
 }
